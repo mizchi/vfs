@@ -141,7 +141,7 @@ pub fn MemoryFs::reset(self : MemoryFs) -> Unit {
 /// Export snapshot. Files are returned in iteration order (no sort needed for correctness).
 pub fn MemoryFs::export_snapshot(self : MemoryFs) -> @vfs.Snapshot {
   let dirs = self.dirs.to_array()
-  let file_entries : Array[@vfs.SnapshotFile] = Array::new(capacity=self.files.size())
+  let file_entries : Array[@vfs.SnapshotFile] = Array::new(capacity=self.files.length())
   for path, data in self.files {
     file_entries.push(@vfs.snapshot_file(path, data))
   }

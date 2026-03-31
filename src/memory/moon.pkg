@@ -2,3 +2,10 @@ import {
   "mizchi/vfs" @vfs,
   "mizchi/vfs/src/path" @path,
 }
+
+options(
+  targets: {
+    "js_ffi.mbt": [ "js" ],
+    "wasm_ffi.mbt": [ "wasm", "wasm-gc" ],
+  },
+)

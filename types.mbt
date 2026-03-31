@@ -32,14 +32,14 @@ pub(open) trait ReadableFileSystem {
 
 /// Snapshot file entry for bulk export/import.
 pub struct SnapshotFile {
-  pub path : String
-  pub data : Bytes
+  path : String
+  data : Bytes
 } derive(Eq, Show)
 
 /// Full snapshot of a filesystem state.
 pub struct Snapshot {
-  pub dirs : Array[String]
-  pub files : Array[SnapshotFile]
+  dirs : Array[String]
+  files : Array[SnapshotFile]
 } derive(Eq, Show)
 
 /// Helper to create SnapshotFile.
