@@ -1,0 +1,4 @@
+import {
+  "mizchi/vfs" @vfs,
+  "mizchi/vfs/src/path" @path,
+}

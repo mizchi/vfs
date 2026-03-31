@@ -1,0 +1,33 @@
+import {
+  "mizchi/vfs" @vfs,
+  "mizchi/vfs/src/path" @path,
+  "mizchi/vfs/src/memory" @memory,
+}
+
+options(
+  link: {
+    "js": {
+      "exports": [
+        "create_memory_fs:createMemoryFs",
+        "mkdir_p:mkdirP",
+        "write_file:writeFile",
+        "write_string:writeString",
+        "remove_file:removeFile",
+        "remove_dir:removeDir",
+        "read_file:readFile",
+        "read_string:readString",
+        "readdir:readdir",
+        "is_dir:isDir",
+        "is_file:isFile",
+        "export_snapshot:exportSnapshot",
+        "replace_snapshot:replaceSnapshot",
+        "reset:reset",
+        "path_normalize:pathNormalize",
+        "path_parent:pathParent",
+        "path_basename:pathBasename",
+        "path_join:pathJoin",
+      ],
+      "format": "esm",
+    },
+  },
+)
