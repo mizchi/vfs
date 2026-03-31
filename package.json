@@ -1,0 +1,17 @@
+{
+  "name": "@mizchi/vfs",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Cross-platform virtual filesystem with pluggable backends (MoonBit)",
+  "exports": {
+    ".": {
+      "import": "./_build/js/debug/build/src/lib/lib.js"
+    }
+  },
+  "files": ["_build/js/debug/build/src/lib/lib.js"],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mizchi/vfs"
+  }
+}
