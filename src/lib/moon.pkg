@@ -43,7 +43,5 @@ options(
       "format": "esm",
     },
   },
-  targets: {
-    "exports.mbt": [ "js" ],
-  },
+  targets: { "exports.mbt": [ "js" ] },
 )
