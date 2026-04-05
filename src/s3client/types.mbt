@@ -14,6 +14,17 @@ pub struct S3Client {
 }
 
 ///|
+pub fn S3Config::new(
+  endpoint~ : String,
+  bucket~ : String,
+  region~ : String,
+  access_key_id~ : String,
+  secret_access_key~ : String,
+) -> S3Config {
+  { endpoint, bucket, region, access_key_id, secret_access_key }
+}
+
+///|
 pub fn S3Client::new(config : S3Config) -> S3Client {
   { config, client: None }
 }
