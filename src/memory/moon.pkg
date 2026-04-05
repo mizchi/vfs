@@ -1,7 +1,12 @@
 import {
   "mizchi/vfs" @vfs,
   "mizchi/vfs/src/path" @path,
+  "moonbitlang/async",
 }
+
+import {
+  "moonbitlang/async",
+} for "test"
 
 options(
   targets: {

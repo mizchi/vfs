@@ -92,6 +92,22 @@ pub fn MemoryFs::remove_dir(self : MemoryFs, path : String) -> Unit raise @vfs.V
   if not(self.dirs.contains(normalized)) {
     raise @vfs.vfs_error("Directory not found: " + normalized)
   }
+  // Recursively remove all children first
+  let child_set = self.children.get(normalized)
+  match child_set {
+    Some(set) => {
+      let names = set.to_array()
+      for name in names {
+        let child_path = if normalized == "/" { "/" + name } else { normalized + "/" + name }
+        if self.dirs.contains(child_path) {
+          self.remove_dir(child_path) |> ignore
+        } else if self.files.contains(child_path) {
+          self.files.remove(child_path)
+        }
+      }
+    }
+    None => ()
+  }
   self.dirs.remove(normalized)
   self.children.remove(normalized)
   self.remove_child(@path.parent(normalized), @path.basename(normalized))
@@ -147,6 +163,19 @@ pub fn MemoryFs::export_snapshot(self : MemoryFs) -> @vfs.Snapshot {
   }
   @vfs.snapshot(dirs, file_entries)
 }
+
+// --- Trait implementations ---
+
+impl @vfs.FileSystem for MemoryFs with mkdir_p(self, path) { self.mkdir_p(path) }
+impl @vfs.FileSystem for MemoryFs with write_file(self, path, content) { self.write_file(path, content) }
+impl @vfs.FileSystem for MemoryFs with write_string(self, path, content) { self.write_string(path, content) }
+impl @vfs.FileSystem for MemoryFs with remove_file(self, path) { self.remove_file(path) }
+impl @vfs.FileSystem for MemoryFs with remove_dir(self, path) { self.remove_dir(path) }
+
+impl @vfs.ReadableFileSystem for MemoryFs with read_file(self, path) { self.read_file(path) }
+impl @vfs.ReadableFileSystem for MemoryFs with readdir(self, path) { self.readdir(path) }
+impl @vfs.ReadableFileSystem for MemoryFs with is_dir(self, path) { self.is_dir(path) }
+impl @vfs.ReadableFileSystem for MemoryFs with is_file(self, path) { self.is_file(path) }
 
 pub fn MemoryFs::replace_snapshot(
   self : MemoryFs,
