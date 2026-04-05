@@ -2,3 +2,4 @@
 _build/
 .mooncakes/
 .moonagent/
+node_modules/
