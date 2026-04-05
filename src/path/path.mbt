@@ -75,3 +75,30 @@ pub fn basename(path : String) -> String {
 pub fn join(parts : Array[String]) -> String {
   normalize(parts.join("/"))
 }
+
+///|
+/// Find the first occurrence of needle in s starting from position start.
+/// Returns -1 if not found.
+pub fn index_of(s : String, needle : String, start : Int) -> Int {
+  let s_len = s.length()
+  let n_len = needle.length()
+  if n_len == 0 {
+    return start
+  }
+  if start + n_len > s_len {
+    return -1
+  }
+  for i in start..<=(s_len - n_len) {
+    let mut matched = true
+    for j in 0..<n_len {
+      if s[i + j] != needle[j] {
+        matched = false
+        break
+      }
+    }
+    if matched {
+      return i
+    }
+  }
+  -1
+}

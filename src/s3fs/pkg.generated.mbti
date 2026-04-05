@@ -1,0 +1,34 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mizchi/vfs/src/s3fs"
+
+import {
+  "mizchi/s3/src/client",
+  "mizchi/vfs",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct S3Fs {
+  client : @client.S3Client
+  prefix : String
+}
+pub async fn S3Fs::export_snapshot(Self) -> @vfs.Snapshot
+pub async fn S3Fs::is_dir(Self, String) -> Bool
+pub async fn S3Fs::is_file(Self, String) -> Bool
+pub async fn S3Fs::mkdir_p(Self, String) -> Unit raise @vfs.VfsError
+pub fn S3Fs::new(@client.S3Client, prefix? : String) -> Self
+pub async fn S3Fs::read_file(Self, String) -> Bytes raise @vfs.VfsError
+pub async fn S3Fs::readdir(Self, String) -> Array[String] raise @vfs.VfsError
+pub async fn S3Fs::remove_dir(Self, String) -> Unit raise @vfs.VfsError
+pub async fn S3Fs::remove_file(Self, String) -> Unit raise @vfs.VfsError
+pub async fn S3Fs::replace_snapshot(Self, @vfs.Snapshot) -> Unit raise @vfs.VfsError
+pub async fn S3Fs::write_file(Self, String, Bytes) -> Unit raise @vfs.VfsError
+pub async fn S3Fs::write_string(Self, String, String) -> Unit raise @vfs.VfsError
+
+// Type aliases
+
+// Traits
+

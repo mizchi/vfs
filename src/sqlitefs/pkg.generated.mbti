@@ -1,0 +1,35 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mizchi/vfs/src/sqlitefs"
+
+import {
+  "mizchi/js/node/sqlite",
+  "mizchi/vfs",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct SqliteFs {
+  db : @sqlite.DatabaseSync
+}
+pub fn SqliteFs::export_snapshot(Self) -> @vfs.Snapshot
+pub fn SqliteFs::in_memory() -> Self
+pub fn SqliteFs::is_dir(Self, String) -> Bool
+pub fn SqliteFs::is_file(Self, String) -> Bool
+pub fn SqliteFs::mkdir_p(Self, String) -> Unit raise @vfs.VfsError
+pub fn SqliteFs::new(String) -> Self
+pub fn SqliteFs::read_file(Self, String) -> Bytes raise @vfs.VfsError
+pub fn SqliteFs::read_string(Self, String) -> String raise @vfs.VfsError
+pub fn SqliteFs::readdir(Self, String) -> Array[String] raise @vfs.VfsError
+pub fn SqliteFs::remove_dir(Self, String) -> Unit raise @vfs.VfsError
+pub fn SqliteFs::remove_file(Self, String) -> Unit raise @vfs.VfsError
+pub fn SqliteFs::replace_snapshot(Self, @vfs.Snapshot) -> Unit raise @vfs.VfsError
+pub fn SqliteFs::write_file(Self, String, Bytes) -> Unit raise @vfs.VfsError
+pub fn SqliteFs::write_string(Self, String, String) -> Unit raise @vfs.VfsError
+
+// Type aliases
+
+// Traits
+

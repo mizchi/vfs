@@ -44,32 +44,6 @@ fn split_path(path : String) -> Array[String] {
   s.split("/").map(fn(sv) { sv.to_string() }).collect()
 }
 
-///|
-/// Find index of substring in string starting from pos. Returns -1 if not found.
-fn string_index_of(s : String, needle : String, start : Int) -> Int {
-  let slen = s.length()
-  let nlen = needle.length()
-  if nlen == 0 {
-    return start
-  }
-  if start + nlen > slen {
-    return -1
-  }
-  for i = start; i <= slen - nlen; i = i + 1 {
-    let mut matched = true
-    for j = 0; j < nlen; j = j + 1 {
-      if s[i + j] != needle[j] {
-        matched = false
-        break
-      }
-    }
-    if matched {
-      return i
-    }
-  }
-  -1
-}
-
 // --- FileSystem trait ---
 
 ///|
@@ -192,7 +166,7 @@ pub async fn S3Fs::readdir(
     // Get the part after the dir prefix
     let relative = key[prefix_len:].to_string()
     // Extract only the immediate child (first component)
-    let slash_idx = string_index_of(relative, "/", 0)
+    let slash_idx = @path.index_of(relative, "/", 0)
     let child = if slash_idx >= 0 {
       relative[:slash_idx].to_string()
     } else {

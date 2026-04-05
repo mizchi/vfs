@@ -68,5 +68,11 @@ options(
       "format": "esm",
     },
   },
-  targets: { "exports.mbt": [ "js" ] },
+  targets: {
+    "idb_exports.mbt": [ "js" ],
+    "memory_exports.mbt": [ "js" ],
+    "path_exports.mbt": [ "js" ],
+    "s3_exports.mbt": [ "js" ],
+    "sqlite_exports.mbt": [ "js" ],
+  },
 )

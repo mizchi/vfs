@@ -1,0 +1,123 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mizchi/vfs/src/lib"
+
+import {
+  "mizchi/s3/src/client",
+  "mizchi/vfs",
+  "mizchi/vfs/src/idb",
+  "mizchi/vfs/src/memory",
+  "mizchi/vfs/src/s3fs",
+  "mizchi/vfs/src/sqlitefs",
+}
+
+// Values
+pub fn create_idb_fs() -> @idb.IndexedDbFs
+
+pub fn create_memory_fs() -> @memory.MemoryFs
+
+pub fn create_s3_client(String, String, String, String, String) -> @client.S3Client
+
+pub fn create_s3fs(@client.S3Client, String) -> @s3fs.S3Fs
+
+pub fn create_sqlite_fs(String) -> @sqlitefs.SqliteFs
+
+pub fn create_sqlite_fs_memory() -> @sqlitefs.SqliteFs
+
+pub fn export_snapshot(@memory.MemoryFs) -> @vfs.Snapshot
+
+pub fn idb_dirty(@idb.IndexedDbFs) -> Bool
+
+pub async fn idb_flush(@idb.IndexedDbFs) -> Unit raise @vfs.VfsError
+
+pub fn idb_is_dir(@idb.IndexedDbFs, String) -> Bool
+
+pub fn idb_is_file(@idb.IndexedDbFs, String) -> Bool
+
+pub async fn idb_mkdir_p(@idb.IndexedDbFs, String) -> Unit raise @vfs.VfsError
+
+pub fn idb_read_file(@idb.IndexedDbFs, String) -> Bytes raise @vfs.VfsError
+
+pub fn idb_read_string(@idb.IndexedDbFs, String) -> String raise @vfs.VfsError
+
+pub fn idb_readdir(@idb.IndexedDbFs, String) -> Array[String] raise @vfs.VfsError
+
+pub async fn idb_remove_dir(@idb.IndexedDbFs, String) -> Unit raise @vfs.VfsError
+
+pub async fn idb_remove_file(@idb.IndexedDbFs, String) -> Unit raise @vfs.VfsError
+
+pub async fn idb_write_file(@idb.IndexedDbFs, String, Bytes) -> Unit raise @vfs.VfsError
+
+pub async fn idb_write_string(@idb.IndexedDbFs, String, String) -> Unit raise @vfs.VfsError
+
+pub fn is_dir(@memory.MemoryFs, String) -> Bool
+
+pub fn is_file(@memory.MemoryFs, String) -> Bool
+
+pub async fn mkdir_p(@memory.MemoryFs, String) -> Unit raise @vfs.VfsError
+
+pub fn path_basename(String) -> String
+
+pub fn path_join(Array[String]) -> String
+
+pub fn path_normalize(String) -> String
+
+pub fn path_parent(String) -> String
+
+pub async fn read_file(@memory.MemoryFs, String) -> Bytes raise @vfs.VfsError
+
+pub async fn read_string(@memory.MemoryFs, String) -> String raise @vfs.VfsError
+
+pub async fn readdir(@memory.MemoryFs, String) -> Array[String] raise @vfs.VfsError
+
+pub async fn remove_dir(@memory.MemoryFs, String) -> Unit raise @vfs.VfsError
+
+pub async fn remove_file(@memory.MemoryFs, String) -> Unit raise @vfs.VfsError
+
+pub async fn replace_snapshot(@memory.MemoryFs, @vfs.Snapshot) -> Unit raise @vfs.VfsError
+
+pub fn reset(@memory.MemoryFs) -> Unit
+
+pub async fn s3_is_dir(@s3fs.S3Fs, String) -> Bool
+
+pub async fn s3_is_file(@s3fs.S3Fs, String) -> Bool
+
+pub async fn s3_mkdir_p(@s3fs.S3Fs, String) -> Unit raise @vfs.VfsError
+
+pub async fn s3_read_file(@s3fs.S3Fs, String) -> Bytes raise @vfs.VfsError
+
+pub async fn s3_readdir(@s3fs.S3Fs, String) -> Array[String] raise @vfs.VfsError
+
+pub async fn s3_remove_dir(@s3fs.S3Fs, String) -> Unit raise @vfs.VfsError
+
+pub async fn s3_remove_file(@s3fs.S3Fs, String) -> Unit raise @vfs.VfsError
+
+pub async fn s3_write_file(@s3fs.S3Fs, String, Bytes) -> Unit raise @vfs.VfsError
+
+pub fn sqlite_is_dir(@sqlitefs.SqliteFs, String) -> Bool
+
+pub fn sqlite_is_file(@sqlitefs.SqliteFs, String) -> Bool
+
+pub fn sqlite_mkdir_p(@sqlitefs.SqliteFs, String) -> Unit raise @vfs.VfsError
+
+pub fn sqlite_read_file(@sqlitefs.SqliteFs, String) -> Bytes raise @vfs.VfsError
+
+pub fn sqlite_readdir(@sqlitefs.SqliteFs, String) -> Array[String] raise @vfs.VfsError
+
+pub fn sqlite_remove_dir(@sqlitefs.SqliteFs, String) -> Unit raise @vfs.VfsError
+
+pub fn sqlite_remove_file(@sqlitefs.SqliteFs, String) -> Unit raise @vfs.VfsError
+
+pub fn sqlite_write_file(@sqlitefs.SqliteFs, String, Bytes) -> Unit raise @vfs.VfsError
+
+pub async fn write_file(@memory.MemoryFs, String, Bytes) -> Unit raise @vfs.VfsError
+
+pub async fn write_string(@memory.MemoryFs, String, String) -> Unit raise @vfs.VfsError
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

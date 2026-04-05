@@ -1,0 +1,39 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mizchi/vfs/src/idb"
+
+import {
+  "mizchi/vfs",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct IndexedDbFs {
+  // private fields
+}
+pub async fn IndexedDbFs::create(db_name? : String, auto_flush_threshold? : Int) -> Self raise @vfs.VfsError
+pub fn IndexedDbFs::dirty(Self) -> Bool
+pub fn IndexedDbFs::export_snapshot(Self) -> @vfs.Snapshot
+pub async fn IndexedDbFs::flush(Self) -> Unit raise @vfs.VfsError
+pub async fn IndexedDbFs::hydrate(Self) -> Unit raise @vfs.VfsError
+pub fn IndexedDbFs::is_dir(Self, String) -> Bool
+pub fn IndexedDbFs::is_file(Self, String) -> Bool
+pub async fn IndexedDbFs::mkdir_p(Self, String) -> Unit raise @vfs.VfsError
+pub fn IndexedDbFs::new(db_name? : String, auto_flush_threshold? : Int) -> Self
+pub fn IndexedDbFs::read_file(Self, String) -> Bytes raise @vfs.VfsError
+pub fn IndexedDbFs::read_string(Self, String) -> String raise @vfs.VfsError
+pub fn IndexedDbFs::readdir(Self, String) -> Array[String] raise @vfs.VfsError
+pub async fn IndexedDbFs::remove_dir(Self, String) -> Unit raise @vfs.VfsError
+pub async fn IndexedDbFs::remove_file(Self, String) -> Unit raise @vfs.VfsError
+pub async fn IndexedDbFs::replace_snapshot(Self, @vfs.Snapshot) -> Unit raise @vfs.VfsError
+pub fn IndexedDbFs::reset(Self) -> Unit
+pub async fn IndexedDbFs::sync(Self) -> Unit raise @vfs.VfsError
+pub async fn IndexedDbFs::write_file(Self, String, Bytes) -> Unit raise @vfs.VfsError
+pub async fn IndexedDbFs::write_string(Self, String, String) -> Unit raise @vfs.VfsError
+
+// Type aliases
+
+// Traits
+

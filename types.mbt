@@ -82,5 +82,4 @@ pub enum VfsEvent {
   Write(String)
   Remove(String)
   Mkdir(String)
-  Flush
 } derive(Eq, Show)

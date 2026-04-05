@@ -2,11 +2,11 @@
 /// IndexedDB-backed VFS. Wraps MemoryFs for fast in-memory operations,
 /// persists via IDB snapshot flush/hydrate.
 pub struct IndexedDbFs {
-  inner : @memory.MemoryFs
-  db_name : String
-  mut dirty : Bool
-  mut write_count : Int
-  auto_flush_threshold : Int
+  priv inner : @memory.MemoryFs
+  priv db_name : String
+  priv mut dirty : Bool
+  priv mut write_count : Int
+  priv auto_flush_threshold : Int
 }
 
 ///|

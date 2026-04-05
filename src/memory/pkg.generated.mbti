@@ -1,0 +1,37 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "mizchi/vfs/src/memory"
+
+import {
+  "mizchi/vfs",
+  "moonbitlang/core/set",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct MemoryFs {
+  files : Map[String, Bytes]
+  dirs : @set.Set[String]
+  children : Map[String, @set.Set[String]]
+}
+pub fn MemoryFs::export_snapshot(Self) -> @vfs.Snapshot
+pub fn MemoryFs::is_dir(Self, String) -> Bool
+pub fn MemoryFs::is_file(Self, String) -> Bool
+pub fn MemoryFs::mkdir_p(Self, String) -> Unit raise @vfs.VfsError
+pub fn MemoryFs::new() -> Self
+pub fn MemoryFs::read_file(Self, String) -> Bytes raise @vfs.VfsError
+pub fn MemoryFs::read_string(Self, String) -> String raise @vfs.VfsError
+pub fn MemoryFs::readdir(Self, String) -> Array[String] raise @vfs.VfsError
+pub fn MemoryFs::remove_dir(Self, String) -> Unit raise @vfs.VfsError
+pub fn MemoryFs::remove_file(Self, String) -> Unit raise @vfs.VfsError
+pub fn MemoryFs::replace_snapshot(Self, @vfs.Snapshot) -> Unit raise @vfs.VfsError
+pub fn MemoryFs::reset(Self) -> Unit
+pub fn MemoryFs::write_file(Self, String, Bytes) -> Unit raise @vfs.VfsError
+pub fn MemoryFs::write_string(Self, String, String) -> Unit raise @vfs.VfsError
+
+// Type aliases
+
+// Traits
+
