@@ -166,11 +166,9 @@ pub async fn S3Fs::readdir(
     // Get the part after the dir prefix
     let relative = key[prefix_len:].to_string()
     // Extract only the immediate child (first component)
-    let slash_idx = @path.index_of(relative, "/", 0)
-    let child = if slash_idx >= 0 {
-      relative[:slash_idx].to_string()
-    } else {
-      relative
+    let child = match relative.find("/") {
+      Some(idx) => relative[:idx].to_string()
+      None => relative
     }
     if child != "" && !seen.contains(child) {
       seen[child] = true

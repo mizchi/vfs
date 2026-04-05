@@ -3,7 +3,6 @@ package "mizchi/vfs/src/memory"
 
 import {
   "mizchi/vfs",
-  "moonbitlang/core/set",
 }
 
 // Values
@@ -12,9 +11,7 @@ import {
 
 // Types and methods
 pub struct MemoryFs {
-  files : Map[String, Bytes]
-  dirs : @set.Set[String]
-  children : Map[String, @set.Set[String]]
+  // private fields
 }
 pub fn MemoryFs::export_snapshot(Self) -> @vfs.Snapshot
 pub fn MemoryFs::is_dir(Self, String) -> Bool

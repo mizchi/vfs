@@ -2,10 +2,9 @@
 /// In-memory VFS backend.
 /// Uses a children map for O(1) readdir lookups.
 pub struct MemoryFs {
-  files : Map[String, Bytes]
-  dirs : Set[String]
-  /// parent_path -> Set of child names (files + subdirs)
-  children : Map[String, Set[String]]
+  priv files : Map[String, Bytes]
+  priv dirs : Set[String]
+  priv children : Map[String, Set[String]]
 }
 
 ///|

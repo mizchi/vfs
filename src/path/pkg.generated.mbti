@@ -4,8 +4,6 @@ package "mizchi/vfs/src/path"
 // Values
 pub fn basename(String) -> String
 
-pub fn index_of(String, String, Int) -> Int
-
 pub fn join(Array[String]) -> String
 
 pub fn normalize(String) -> String
