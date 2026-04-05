@@ -1,0 +1,19 @@
+import {
+  "mizchi/vfs" @vfs,
+  "mizchi/vfs/src/memory" @memory,
+  "moonbitlang/async",
+  "moonbitlang/async/js_async" @js_async,
+}
+
+import {
+  "moonbitlang/async",
+} for "test"
+
+options(
+  targets: {
+    "idb.mbt": [ "js", "native" ],
+    "idb_test.mbt": [ "js" ],
+    "js_ffi.mbt": [ "js" ],
+    "wasm_ffi.mbt": [ "wasm", "wasm-gc" ],
+  },
+)

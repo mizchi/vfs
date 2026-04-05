@@ -17,6 +17,7 @@
     "url": "https://github.com/mizchi/vfs"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1024.0"
+    "@aws-sdk/client-s3": "^3.1024.0",
+    "fake-indexeddb": "^6.2.5"
   }
 }
