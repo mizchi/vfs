@@ -2,7 +2,8 @@
   "name": "mizchi/vfs",
   "version": "0.2.0",
   "deps": {
-    "moonbitlang/async": "0.17.0"
+    "moonbitlang/async": "0.17.0",
+    "mizchi/s3": { "path": "../s3" }
   },
   "repository": "https://github.com/mizchi/vfs",
   "license": "Apache-2.0",

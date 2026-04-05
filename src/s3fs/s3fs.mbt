@@ -5,7 +5,7 @@ pub struct S3Fs {
 }
 
 ///|
-pub fn S3Fs::new(client : @s3client.S3Client, prefix~ : String = "") -> S3Fs {
+pub fn S3Fs::new(client : @s3client.S3Client, prefix? : String = "") -> S3Fs {
   { client, prefix }
 }
 
@@ -16,11 +16,7 @@ pub fn S3Fs::new(client : @s3client.S3Client, prefix~ : String = "") -> S3Fs {
 fn S3Fs::to_key(self : S3Fs, path : String) -> String {
   let normalized = @path.normalize(path)
   // Strip leading "/"
-  let relative = if normalized == "/" {
-    ""
-  } else {
-    normalized[1:].to_string()
-  }
+  let relative = if normalized == "/" { "" } else { normalized[1:].to_string() }
   self.prefix + relative
 }
 
@@ -77,14 +73,19 @@ fn string_index_of(s : String, needle : String, start : Int) -> Int {
 // --- FileSystem trait ---
 
 ///|
-pub async fn S3Fs::mkdir_p(self : S3Fs, path : String) -> Unit raise @vfs.VfsError {
+pub async fn S3Fs::mkdir_p(
+  self : S3Fs,
+  path : String,
+) -> Unit raise @vfs.VfsError {
   let parts = split_path(path)
   // Ensure all ancestor directories as 0-byte objects with trailing /
   let mut current = ""
   for part in parts {
     current = current + part + "/"
     let key = self.prefix + current
-    self.client.put_object(key, Bytes::new(0))
+    self.client.put_object(key, Bytes::new(0)) catch {
+      e => raise @vfs.vfs_error(e.to_string())
+    }
   }
 }
 
@@ -101,7 +102,9 @@ pub async fn S3Fs::write_file(
     self.mkdir_p(parent)
   }
   let key = self.to_key(normalized)
-  self.client.put_object(key, content)
+  self.client.put_object(key, content) catch {
+    e => raise @vfs.vfs_error(e.to_string())
+  }
 }
 
 ///|
@@ -115,31 +118,43 @@ pub async fn S3Fs::write_string(
 }
 
 ///|
-pub async fn S3Fs::remove_file(self : S3Fs, path : String) -> Unit raise @vfs.VfsError {
+pub async fn S3Fs::remove_file(
+  self : S3Fs,
+  path : String,
+) -> Unit raise @vfs.VfsError {
   let key = self.to_key(path)
-  let obj = self.client.head_object(key)
+  let obj = self.client.head_object(key) catch {
+    e => raise @vfs.vfs_error(e.to_string())
+  }
   if obj is None {
     raise @vfs.vfs_error("File not found: " + @path.normalize(path))
   }
-  self.client.delete_object(key)
+  self.client.delete_object(key) catch {
+    e => raise @vfs.vfs_error(e.to_string())
+  }
 }
 
 ///|
-pub async fn S3Fs::remove_dir(self : S3Fs, path : String) -> Unit raise @vfs.VfsError {
+pub async fn S3Fs::remove_dir(
+  self : S3Fs,
+  path : String,
+) -> Unit raise @vfs.VfsError {
   let dir_key = self.to_dir_key(path)
-  let objects = self.client.list_objects(dir_key)
+  let objects = self.client.list_objects(dir_key) catch {
+    e => raise @vfs.vfs_error(e.to_string())
+  }
   for obj in objects {
-    self.client.delete_object(obj.key)
+    self.client.delete_object(obj.key) catch {
+      e => raise @vfs.vfs_error(e.to_string())
+    }
   }
   // Also delete the directory marker itself if it exists as an object
   if dir_key != "" {
-    let head = try {
-      self.client.head_object(dir_key)
-    } catch {
-      _ => None
-    }
+    let head = self.client.head_object(dir_key) catch { _ => None }
     if head is Some(_) {
-      self.client.delete_object(dir_key)
+      self.client.delete_object(dir_key) catch {
+        e => raise @vfs.vfs_error(e.to_string())
+      }
     }
   }
 }
@@ -147,15 +162,25 @@ pub async fn S3Fs::remove_dir(self : S3Fs, path : String) -> Unit raise @vfs.Vfs
 // --- ReadableFileSystem trait ---
 
 ///|
-pub async fn S3Fs::read_file(self : S3Fs, path : String) -> Bytes raise @vfs.VfsError {
+pub async fn S3Fs::read_file(
+  self : S3Fs,
+  path : String,
+) -> Bytes raise @vfs.VfsError {
   let key = self.to_key(path)
-  self.client.get_object(key)
+  self.client.get_object(key) catch {
+    e => raise @vfs.vfs_error(e.to_string())
+  }
 }
 
 ///|
-pub async fn S3Fs::readdir(self : S3Fs, path : String) -> Array[String] raise @vfs.VfsError {
+pub async fn S3Fs::readdir(
+  self : S3Fs,
+  path : String,
+) -> Array[String] raise @vfs.VfsError {
   let dir_key = self.to_dir_key(path)
-  let objects = self.client.list_objects(dir_key)
+  let objects = self.client.list_objects(dir_key) catch {
+    e => raise @vfs.vfs_error(e.to_string())
+  }
   let result : Array[String] = []
   let seen : Map[String, Bool] = {}
   let prefix_len = dir_key.length()
@@ -173,7 +198,7 @@ pub async fn S3Fs::readdir(self : S3Fs, path : String) -> Array[String] raise @v
     } else {
       relative
     }
-    if child != "" && !(seen.contains(child)) {
+    if child != "" && !seen.contains(child) {
       seen[child] = true
       result.push(child)
     }
@@ -185,18 +210,14 @@ pub async fn S3Fs::readdir(self : S3Fs, path : String) -> Array[String] raise @v
 pub async fn S3Fs::is_dir(self : S3Fs, path : String) -> Bool {
   let dir_key = self.to_dir_key(path)
   // Check if dir marker exists
-  let head : @s3client.S3Object? = try {
-    self.client.head_object(dir_key)
-  } catch {
+  let head : @s3client.S3Object? = self.client.head_object(dir_key) catch {
     _ => None
   }
   if head is Some(_) {
     return true
   }
   // Also check if any objects exist under this prefix
-  let objects : Array[@s3client.S3Object] = try {
-    self.client.list_objects(dir_key)
-  } catch {
+  let objects : Array[@s3client.S3Object] = self.client.list_objects(dir_key) catch {
     _ => []
   }
   objects.length() > 0
@@ -205,9 +226,7 @@ pub async fn S3Fs::is_dir(self : S3Fs, path : String) -> Bool {
 ///|
 pub async fn S3Fs::is_file(self : S3Fs, path : String) -> Bool {
   let key = self.to_key(path)
-  let head : @s3client.S3Object? = try {
-    self.client.head_object(key)
-  } catch {
+  let head : @s3client.S3Object? = self.client.head_object(key) catch {
     _ => None
   }
   head is Some(_)
@@ -217,9 +236,9 @@ pub async fn S3Fs::is_file(self : S3Fs, path : String) -> Bool {
 
 ///|
 pub async fn S3Fs::export_snapshot(self : S3Fs) -> @vfs.Snapshot {
-  let objects : Array[@s3client.S3Object] = try {
-    self.client.list_objects(self.prefix)
-  } catch {
+  let objects : Array[@s3client.S3Object] = self.client.list_objects(
+    self.prefix,
+  ) catch {
     _ => []
   }
   let dirs : Array[String] = ["/"]
@@ -239,9 +258,7 @@ pub async fn S3Fs::export_snapshot(self : S3Fs) -> @vfs.Snapshot {
     } else {
       // File: download the content
       let vfs_path = "/" + relative
-      let data : Bytes = try {
-        self.client.get_object(key)
-      } catch {
+      let data : Bytes = self.client.get_object(key) catch {
         _ => Bytes::new(0)
       }
       files.push(@vfs.snapshot_file(vfs_path, data))
@@ -256,15 +273,21 @@ pub async fn S3Fs::replace_snapshot(
   snapshot : @vfs.Snapshot,
 ) -> Unit raise @vfs.VfsError {
   // Delete all existing objects
-  let existing = self.client.list_objects(self.prefix)
+  let existing = self.client.list_objects(self.prefix) catch {
+    e => raise @vfs.vfs_error(e.to_string())
+  }
   for obj in existing {
-    self.client.delete_object(obj.key)
+    self.client.delete_object(obj.key) catch {
+      e => raise @vfs.vfs_error(e.to_string())
+    }
   }
   // Recreate directories
   for dir in snapshot.dirs {
     if dir != "/" {
       let dir_key = self.to_dir_key(dir)
-      self.client.put_object(dir_key, Bytes::new(0))
+      self.client.put_object(dir_key, Bytes::new(0)) catch {
+        e => raise @vfs.vfs_error(e.to_string())
+      }
     }
   }
   // Recreate files
@@ -276,7 +299,9 @@ pub async fn S3Fs::replace_snapshot(
 // --- Trait implementations ---
 
 ///|
-impl @vfs.FileSystem for S3Fs with mkdir_p(self, path) { self.mkdir_p(path) }
+impl @vfs.FileSystem for S3Fs with mkdir_p(self, path) {
+  self.mkdir_p(path)
+}
 
 ///|
 impl @vfs.FileSystem for S3Fs with write_file(self, path, content) {

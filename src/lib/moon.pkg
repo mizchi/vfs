@@ -2,7 +2,7 @@ import {
   "mizchi/vfs" @vfs,
   "mizchi/vfs/src/path" @path,
   "mizchi/vfs/src/memory" @memory,
-  "mizchi/vfs/src/s3client" @s3client,
+  "mizchi/s3/src/client" @s3client,
   "mizchi/vfs/src/s3fs" @s3fs,
   "moonbitlang/async",
 }
