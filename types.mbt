@@ -15,19 +15,19 @@ pub fn vfs_error(msg : String) -> VfsError {
 
 /// Core filesystem trait for write operations.
 pub(open) trait FileSystem {
-  mkdir_p(Self, String) -> Unit raise VfsError
-  write_file(Self, String, Bytes) -> Unit raise VfsError
-  write_string(Self, String, String) -> Unit raise VfsError
-  remove_file(Self, String) -> Unit raise VfsError
-  remove_dir(Self, String) -> Unit raise VfsError
+  async mkdir_p(Self, String) -> Unit raise VfsError
+  async write_file(Self, String, Bytes) -> Unit raise VfsError
+  async write_string(Self, String, String) -> Unit raise VfsError
+  async remove_file(Self, String) -> Unit raise VfsError
+  async remove_dir(Self, String) -> Unit raise VfsError
 }
 
 /// Core filesystem trait for read operations.
 pub(open) trait ReadableFileSystem {
-  read_file(Self, String) -> Bytes raise VfsError
-  readdir(Self, String) -> Array[String] raise VfsError
-  is_dir(Self, String) -> Bool
-  is_file(Self, String) -> Bool
+  async read_file(Self, String) -> Bytes raise VfsError
+  async readdir(Self, String) -> Array[String] raise VfsError
+  async is_dir(Self, String) -> Bool
+  async is_file(Self, String) -> Bool
 }
 
 /// Snapshot file entry for bulk export/import.
@@ -54,14 +54,14 @@ pub fn snapshot(dirs : Array[String], files : Array[SnapshotFile]) -> Snapshot {
 
 /// Trait for backends that support snapshot export/import.
 pub(open) trait Snapshottable {
-  export_snapshot(Self) -> Snapshot
-  replace_snapshot(Self, Snapshot) -> Unit raise VfsError
+  async export_snapshot(Self) -> Snapshot
+  async replace_snapshot(Self, Snapshot) -> Unit raise VfsError
 }
 
 /// Trait for backends with buffered writes.
 pub(open) trait Flushable {
-  flush(Self) -> Unit raise VfsError
-  sync(Self) -> Unit raise VfsError
+  async flush(Self) -> Unit raise VfsError
+  async sync(Self) -> Unit raise VfsError
   dirty(Self) -> Bool
 }
 
