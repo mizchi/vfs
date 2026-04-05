@@ -1,12 +1,12 @@
 ///|
-async test "write and read file" {
+test "write and read file" {
   let fs = MemoryFs::new()
   fs.write_string("/hello.txt", "world")
   assert_eq(fs.read_string("/hello.txt"), "world")
 }
 
 ///|
-async test "write creates parent dirs" {
+test "write creates parent dirs" {
   let fs = MemoryFs::new()
   fs.write_string("/a/b/c/file.txt", "deep")
   assert_true(fs.is_dir("/a"))
@@ -16,7 +16,7 @@ async test "write creates parent dirs" {
 }
 
 ///|
-async test "readdir lists files and dirs" {
+test "readdir lists files and dirs" {
   let fs = MemoryFs::new()
   fs.write_string("/repo/a.txt", "a")
   fs.write_string("/repo/b.txt", "b")
@@ -29,7 +29,7 @@ async test "readdir lists files and dirs" {
 }
 
 ///|
-async test "remove_file" {
+test "remove_file" {
   let fs = MemoryFs::new()
   fs.write_string("/tmp/x.txt", "data")
   assert_true(fs.is_file("/tmp/x.txt"))
@@ -38,7 +38,7 @@ async test "remove_file" {
 }
 
 ///|
-async test "remove_file not found raises" {
+test "remove_file not found raises" {
   let fs = MemoryFs::new()
   let mut raised = false
   fs.remove_file("/nonexistent") catch {
@@ -48,7 +48,7 @@ async test "remove_file not found raises" {
 }
 
 ///|
-async test "read_file not found raises" {
+test "read_file not found raises" {
   let fs = MemoryFs::new()
   let mut raised = false
   try {
@@ -60,7 +60,7 @@ async test "read_file not found raises" {
 }
 
 ///|
-async test "readdir on nonexistent dir raises" {
+test "readdir on nonexistent dir raises" {
   let fs = MemoryFs::new()
   let mut raised = false
   try {
@@ -72,13 +72,13 @@ async test "readdir on nonexistent dir raises" {
 }
 
 ///|
-async test "is_dir root exists" {
+test "is_dir root exists" {
   let fs = MemoryFs::new()
   assert_true(fs.is_dir("/"))
 }
 
 ///|
-async test "reset clears all" {
+test "reset clears all" {
   let fs = MemoryFs::new()
   fs.write_string("/a.txt", "data")
   fs.mkdir_p("/sub")
@@ -89,7 +89,7 @@ async test "reset clears all" {
 }
 
 ///|
-async test "snapshot export and import" {
+test "snapshot export and import" {
   let fs1 = MemoryFs::new()
   fs1.write_string("/repo/README.md", "# Hello")
   fs1.write_string("/repo/src/main.mbt", "fn main {}")

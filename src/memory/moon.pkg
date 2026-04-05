@@ -1,12 +1,7 @@
 import {
   "mizchi/vfs" @vfs,
   "mizchi/vfs/src/path" @path,
-  "moonbitlang/async",
 }
-
-import {
-  "moonbitlang/async",
-} for "test"
 
 options(
   targets: { "js_ffi.mbt": [ "js" ], "wasm_ffi.mbt": [ "wasm", "wasm-gc" ] },
