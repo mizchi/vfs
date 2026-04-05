@@ -6,5 +6,6 @@ import {
 }
 
 options(
+  supported_targets: [ "js" ],
   targets: { "sqlitefs.mbt": [ "js" ], "sqlitefs_test.mbt": [ "js" ] },
 )
