@@ -9,37 +9,37 @@ pub fn create_memory_fs() -> @memory.MemoryFs {
 
 // --- FileSystem write ops ---
 
-pub fn mkdir_p(fs : @memory.MemoryFs, path : String) -> Unit raise @vfs.VfsError {
+pub async fn mkdir_p(fs : @memory.MemoryFs, path : String) -> Unit raise @vfs.VfsError {
   fs.mkdir_p(path)
 }
 
-pub fn write_file(fs : @memory.MemoryFs, path : String, content : Bytes) -> Unit raise @vfs.VfsError {
+pub async fn write_file(fs : @memory.MemoryFs, path : String, content : Bytes) -> Unit raise @vfs.VfsError {
   fs.write_file(path, content)
 }
 
-pub fn write_string(fs : @memory.MemoryFs, path : String, content : String) -> Unit raise @vfs.VfsError {
+pub async fn write_string(fs : @memory.MemoryFs, path : String, content : String) -> Unit raise @vfs.VfsError {
   fs.write_string(path, content)
 }
 
-pub fn remove_file(fs : @memory.MemoryFs, path : String) -> Unit raise @vfs.VfsError {
+pub async fn remove_file(fs : @memory.MemoryFs, path : String) -> Unit raise @vfs.VfsError {
   fs.remove_file(path)
 }
 
-pub fn remove_dir(fs : @memory.MemoryFs, path : String) -> Unit raise @vfs.VfsError {
+pub async fn remove_dir(fs : @memory.MemoryFs, path : String) -> Unit raise @vfs.VfsError {
   fs.remove_dir(path)
 }
 
 // --- ReadableFileSystem read ops ---
 
-pub fn read_file(fs : @memory.MemoryFs, path : String) -> Bytes raise @vfs.VfsError {
+pub async fn read_file(fs : @memory.MemoryFs, path : String) -> Bytes raise @vfs.VfsError {
   fs.read_file(path)
 }
 
-pub fn read_string(fs : @memory.MemoryFs, path : String) -> String raise @vfs.VfsError {
+pub async fn read_string(fs : @memory.MemoryFs, path : String) -> String raise @vfs.VfsError {
   fs.read_string(path)
 }
 
-pub fn readdir(fs : @memory.MemoryFs, path : String) -> Array[String] raise @vfs.VfsError {
+pub async fn readdir(fs : @memory.MemoryFs, path : String) -> Array[String] raise @vfs.VfsError {
   fs.readdir(path)
 }
 
@@ -57,7 +57,7 @@ pub fn export_snapshot(fs : @memory.MemoryFs) -> @vfs.Snapshot {
   fs.export_snapshot()
 }
 
-pub fn replace_snapshot(fs : @memory.MemoryFs, snapshot : @vfs.Snapshot) -> Unit raise @vfs.VfsError {
+pub async fn replace_snapshot(fs : @memory.MemoryFs, snapshot : @vfs.Snapshot) -> Unit raise @vfs.VfsError {
   fs.replace_snapshot(snapshot)
 }
 

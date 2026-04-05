@@ -2,6 +2,7 @@ import {
   "mizchi/vfs" @vfs,
   "mizchi/vfs/src/path" @path,
   "mizchi/vfs/src/memory" @memory,
+  "moonbitlang/async",
 }
 
 options(
