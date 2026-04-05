@@ -1,0 +1,10 @@
+import {
+  "mizchi/vfs" @vfs,
+  "mizchi/vfs/src/path" @path,
+  "mizchi/js/core" @core,
+  "mizchi/js/node/sqlite" @sqlite,
+}
+
+options(
+  targets: { "sqlitefs.mbt": [ "js" ], "sqlitefs_test.mbt": [ "js" ] },
+)
