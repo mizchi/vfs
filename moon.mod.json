@@ -1,8 +1,16 @@
 {
   "name": "mizchi/vfs",
   "version": "0.1.0",
-  "description": "Cross-platform virtual filesystem with pluggable backends",
+  "deps": {
+    "moonbitlang/async": "0.17.0"
+  },
+  "repository": "https://github.com/mizchi/vfs",
   "license": "Apache-2.0",
-  "keywords": ["vfs", "filesystem", "indexeddb", "wasi"],
-  "repository": "https://github.com/mizchi/vfs"
+  "keywords": [
+    "vfs",
+    "filesystem",
+    "indexeddb",
+    "wasi"
+  ],
+  "description": "Cross-platform virtual filesystem with pluggable backends"
 }
