@@ -1,0 +1,20 @@
+import {
+  "mizchi/vfs" @vfs,
+  "moonbitlang/async",
+  "moonbitlang/async/http" @http,
+  "moonbitlang/async/io" @io,
+  "moonbitlang/async/js_async" @js_async,
+  "moonbitlang/core/encoding/utf8" @utf8,
+  "moonbitlang/core/strconv" @strconv,
+}
+
+import {
+  "moonbitlang/async",
+} for "test"
+
+options(
+  targets: {
+    "js_ffi.mbt": [ "js" ],
+    "wasm_ffi.mbt": [ "wasm", "wasm-gc" ],
+  },
+)
