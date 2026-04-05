@@ -9,8 +9,5 @@ import {
 } for "test"
 
 options(
-  targets: {
-    "js_ffi.mbt": [ "js" ],
-    "wasm_ffi.mbt": [ "wasm", "wasm-gc" ],
-  },
+  targets: { "js_ffi.mbt": [ "js" ], "wasm_ffi.mbt": [ "wasm", "wasm-gc" ] },
 )

@@ -1,3 +1,4 @@
+///|
 /// Normalize a path: ensure leading /, collapse multiple /, strip trailing /.
 pub fn normalize(path : String) -> String {
   if path.is_empty() {
@@ -27,6 +28,7 @@ pub fn normalize(path : String) -> String {
   }
 }
 
+///|
 /// Find the last index of a character in a string.
 fn last_index_of(s : String, ch : Char) -> Int {
   let mut idx = -1
@@ -38,6 +40,7 @@ fn last_index_of(s : String, ch : Char) -> Int {
   idx
 }
 
+///|
 /// Get the parent directory of a path.
 pub fn parent(path : String) -> String {
   let normalized = normalize(path)
@@ -52,6 +55,7 @@ pub fn parent(path : String) -> String {
   }
 }
 
+///|
 /// Get the base name (last component) of a path.
 pub fn basename(path : String) -> String {
   let normalized = normalize(path)
@@ -66,6 +70,7 @@ pub fn basename(path : String) -> String {
   }
 }
 
+///|
 /// Join path segments.
 pub fn join(parts : Array[String]) -> String {
   normalize(parts.join("/"))

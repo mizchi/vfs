@@ -1,18 +1,22 @@
+///|
 /// VFS error type.
 pub suberror VfsError {
   VfsError(String)
 }
 
+///|
 pub fn VfsError::to_string(self : VfsError) -> String {
   let VfsError(msg) = self
   msg
 }
 
+///|
 /// Helper to create VfsError from other packages.
 pub fn vfs_error(msg : String) -> VfsError {
   VfsError(msg)
 }
 
+///|
 /// Core filesystem trait for write operations.
 pub(open) trait FileSystem {
   async mkdir_p(Self, String) -> Unit raise VfsError
@@ -22,6 +26,7 @@ pub(open) trait FileSystem {
   async remove_dir(Self, String) -> Unit raise VfsError
 }
 
+///|
 /// Core filesystem trait for read operations.
 pub(open) trait ReadableFileSystem {
   async read_file(Self, String) -> Bytes raise VfsError
@@ -30,34 +35,40 @@ pub(open) trait ReadableFileSystem {
   async is_file(Self, String) -> Bool
 }
 
+///|
 /// Snapshot file entry for bulk export/import.
 pub struct SnapshotFile {
   path : String
   data : Bytes
 } derive(Eq, Show)
 
+///|
 /// Full snapshot of a filesystem state.
 pub struct Snapshot {
   dirs : Array[String]
   files : Array[SnapshotFile]
 } derive(Eq, Show)
 
+///|
 /// Helper to create SnapshotFile.
 pub fn snapshot_file(path : String, data : Bytes) -> SnapshotFile {
   { path, data }
 }
 
+///|
 /// Helper to create Snapshot.
 pub fn snapshot(dirs : Array[String], files : Array[SnapshotFile]) -> Snapshot {
   { dirs, files }
 }
 
+///|
 /// Trait for backends that support snapshot export/import.
 pub(open) trait Snapshottable {
   async export_snapshot(Self) -> Snapshot
   async replace_snapshot(Self, Snapshot) -> Unit raise VfsError
 }
 
+///|
 /// Trait for backends with buffered writes.
 pub(open) trait Flushable {
   async flush(Self) -> Unit raise VfsError
@@ -65,6 +76,7 @@ pub(open) trait Flushable {
   dirty(Self) -> Bool
 }
 
+///|
 /// Event types for inter-tab notification.
 pub enum VfsEvent {
   Write(String)
