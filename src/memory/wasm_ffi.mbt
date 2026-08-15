@@ -2,15 +2,12 @@
 /// WASM target fallback for string encoding.
 /// Uses MoonBit's built-in String/Bytes conversion.
 fn js_string_to_utf8(s : String) -> Bytes {
-  s.to_bytes()
+  @utf8.encode(s)
 }
 
 ///|
 fn js_utf8_to_string(b : Bytes) -> String {
-  b.to_unchecked_string()
-}
-
-///|
-fn js_clone_bytes(b : Bytes) -> Bytes {
-  b
+  @utf8.decode(b) catch {
+    _ => b.to_unchecked_string()
+  }
 }

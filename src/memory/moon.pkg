@@ -1,8 +1,12 @@
 import {
-  "mizchi/vfs" @vfs,
-  "mizchi/vfs/src/path" @path,
+  "mizchi/vfs",
+  "mizchi/vfs/src/path",
+  "moonbitlang/core/encoding/utf8",
 }
 
 options(
-  targets: { "js_ffi.mbt": [ "js" ], "wasm_ffi.mbt": [ "wasm", "wasm-gc" ] },
+  targets: {
+    "js_ffi.mbt": [ "js" ],
+    "wasm_ffi.mbt": [ "native", "wasm", "wasm-gc" ],
+  },
 )

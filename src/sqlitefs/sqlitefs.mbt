@@ -52,6 +52,7 @@ fn SqliteFs::ensure_dir_chain(self : SqliteFs, path : String) -> Unit {
 }
 
 ///|
+#warnings("-unused_error_type")
 pub fn SqliteFs::mkdir_p(
   self : SqliteFs,
   path : String,
@@ -60,6 +61,7 @@ pub fn SqliteFs::mkdir_p(
 }
 
 ///|
+#warnings("-unused_error_type")
 pub fn SqliteFs::write_file(
   self : SqliteFs,
   path : String,
@@ -165,7 +167,7 @@ pub fn SqliteFs::readdir(
   }
   let prefix = if normalized == "/" { "/" } else { normalized + "/" }
   let result : Array[String] = []
-  let seen : Map[String, Bool] = {}
+  let seen : Map[String, Bool] = Map([])
   // Find direct child dirs
   let dir_stmt = self.db.prepare("SELECT path FROM dirs WHERE path LIKE ?")
   let dirs = dir_stmt.all(anonymous_parameters=[@core.any(prefix + "%")])
@@ -173,8 +175,8 @@ pub fn SqliteFs::readdir(
     let child_path : String = row["path"].cast()
     // Extract the part after prefix, take first segment
     let relative = child_path[prefix.length():]
-    let name = first_segment(relative.to_string())
-    if not(name.is_empty()) && not(seen.contains(name)) {
+    let name = first_segment(relative.to_owned())
+    if !name.is_empty() && !seen.contains(name) {
       seen[name] = true
       result.push(name)
     }
@@ -185,8 +187,8 @@ pub fn SqliteFs::readdir(
   for row in files {
     let child_path : String = row["path"].cast()
     let relative = child_path[prefix.length():]
-    let name = first_segment(relative.to_string())
-    if not(name.is_empty()) && not(seen.contains(name)) {
+    let name = first_segment(relative.to_owned())
+    if !name.is_empty() && !seen.contains(name) {
       seen[name] = true
       result.push(name)
     }
@@ -239,6 +241,7 @@ pub fn SqliteFs::export_snapshot(self : SqliteFs) -> @vfs.Snapshot {
 }
 
 ///|
+#warnings("-unused_error_type")
 pub fn SqliteFs::replace_snapshot(
   self : SqliteFs,
   snapshot : @vfs.Snapshot,
@@ -264,56 +267,59 @@ pub fn SqliteFs::replace_snapshot(
 // --- Trait implementations ---
 
 ///|
-impl @vfs.FileSystem for SqliteFs with mkdir_p(self, path) {
+pub impl @vfs.FileSystem for SqliteFs with fn mkdir_p(self, path) {
   self.mkdir_p(path)
 }
 
 ///|
-impl @vfs.FileSystem for SqliteFs with write_file(self, path, content) {
+pub impl @vfs.FileSystem for SqliteFs with fn write_file(self, path, content) {
   self.write_file(path, content)
 }
 
 ///|
-impl @vfs.FileSystem for SqliteFs with write_string(self, path, content) {
+pub impl @vfs.FileSystem for SqliteFs with fn write_string(self, path, content) {
   self.write_string(path, content)
 }
 
 ///|
-impl @vfs.FileSystem for SqliteFs with remove_file(self, path) {
+pub impl @vfs.FileSystem for SqliteFs with fn remove_file(self, path) {
   self.remove_file(path)
 }
 
 ///|
-impl @vfs.FileSystem for SqliteFs with remove_dir(self, path) {
+pub impl @vfs.FileSystem for SqliteFs with fn remove_dir(self, path) {
   self.remove_dir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for SqliteFs with read_file(self, path) {
+pub impl @vfs.ReadableFileSystem for SqliteFs with fn read_file(self, path) {
   self.read_file(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for SqliteFs with readdir(self, path) {
+pub impl @vfs.ReadableFileSystem for SqliteFs with fn readdir(self, path) {
   self.readdir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for SqliteFs with is_dir(self, path) {
+pub impl @vfs.ReadableFileSystem for SqliteFs with fn is_dir(self, path) {
   self.is_dir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for SqliteFs with is_file(self, path) {
+pub impl @vfs.ReadableFileSystem for SqliteFs with fn is_file(self, path) {
   self.is_file(path)
 }
 
 ///|
-impl @vfs.Snapshottable for SqliteFs with export_snapshot(self) {
+pub impl @vfs.Snapshottable for SqliteFs with fn export_snapshot(self) {
   self.export_snapshot()
 }
 
 ///|
-impl @vfs.Snapshottable for SqliteFs with replace_snapshot(self, snapshot) {
+pub impl @vfs.Snapshottable for SqliteFs with fn replace_snapshot(
+  self,
+  snapshot,
+) {
   self.replace_snapshot(snapshot)
 }

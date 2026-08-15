@@ -11,7 +11,7 @@ pub fn normalize(path : String) -> String {
   }
   for ch in path {
     if ch == '/' {
-      if not(prev_slash) {
+      if !prev_slash {
         buf.write_char('/')
       }
       prev_slash = true
@@ -22,7 +22,7 @@ pub fn normalize(path : String) -> String {
   }
   let result = buf.to_string()
   if result.length() > 1 && result[result.length() - 1] == '/' {
-    result[:result.length() - 1].to_string()
+    result[:result.length() - 1].to_owned()
   } else {
     result
   }
@@ -36,7 +36,7 @@ pub fn parent(path : String) -> String {
     return "/"
   }
   match normalized.rev_find("/") {
-    Some(idx) => if idx <= 0 { "/" } else { normalized[:idx].to_string() }
+    Some(idx) => if idx <= 0 { "/" } else { normalized[:idx].to_owned() }
     None => "/"
   }
 }
@@ -49,7 +49,7 @@ pub fn basename(path : String) -> String {
     return "/"
   }
   match normalized.rev_find("/") {
-    Some(idx) => normalized[idx + 1:].to_string()
+    Some(idx) => normalized[idx + 1:].to_owned()
     None => normalized
   }
 }

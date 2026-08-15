@@ -157,6 +157,7 @@ pub fn IndexedDbFs::export_snapshot(self : IndexedDbFs) -> @vfs.Snapshot {
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn IndexedDbFs::replace_snapshot(
   self : IndexedDbFs,
   snapshot : @vfs.Snapshot,
@@ -169,7 +170,7 @@ pub async fn IndexedDbFs::replace_snapshot(
 
 ///|
 pub async fn IndexedDbFs::flush(self : IndexedDbFs) -> Unit raise @vfs.VfsError {
-  if not(self.dirty) {
+  if !self.dirty {
     return
   }
   let snapshot = self.inner.export_snapshot()
@@ -198,71 +199,78 @@ pub fn IndexedDbFs::reset(self : IndexedDbFs) -> Unit {
 // --- Trait implementations ---
 
 ///|
-impl @vfs.FileSystem for IndexedDbFs with mkdir_p(self, path) {
+pub impl @vfs.FileSystem for IndexedDbFs with fn mkdir_p(self, path) {
   self.mkdir_p(path)
 }
 
 ///|
-impl @vfs.FileSystem for IndexedDbFs with write_file(self, path, content) {
+pub impl @vfs.FileSystem for IndexedDbFs with fn write_file(self, path, content) {
   self.write_file(path, content)
 }
 
 ///|
-impl @vfs.FileSystem for IndexedDbFs with write_string(self, path, content) {
+pub impl @vfs.FileSystem for IndexedDbFs with fn write_string(
+  self,
+  path,
+  content,
+) {
   self.write_string(path, content)
 }
 
 ///|
-impl @vfs.FileSystem for IndexedDbFs with remove_file(self, path) {
+pub impl @vfs.FileSystem for IndexedDbFs with fn remove_file(self, path) {
   self.remove_file(path)
 }
 
 ///|
-impl @vfs.FileSystem for IndexedDbFs with remove_dir(self, path) {
+pub impl @vfs.FileSystem for IndexedDbFs with fn remove_dir(self, path) {
   self.remove_dir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for IndexedDbFs with read_file(self, path) {
+pub impl @vfs.ReadableFileSystem for IndexedDbFs with fn read_file(self, path) {
   self.read_file(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for IndexedDbFs with readdir(self, path) {
+pub impl @vfs.ReadableFileSystem for IndexedDbFs with fn readdir(self, path) {
   self.readdir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for IndexedDbFs with is_dir(self, path) {
+pub impl @vfs.ReadableFileSystem for IndexedDbFs with fn is_dir(self, path) {
   self.is_dir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for IndexedDbFs with is_file(self, path) {
+pub impl @vfs.ReadableFileSystem for IndexedDbFs with fn is_file(self, path) {
   self.is_file(path)
 }
 
 ///|
-impl @vfs.Snapshottable for IndexedDbFs with export_snapshot(self) {
+pub impl @vfs.Snapshottable for IndexedDbFs with fn export_snapshot(self) {
   self.export_snapshot()
 }
 
 ///|
-impl @vfs.Snapshottable for IndexedDbFs with replace_snapshot(self, snapshot) {
+pub impl @vfs.Snapshottable for IndexedDbFs with fn replace_snapshot(
+  self,
+  snapshot,
+) {
   self.replace_snapshot(snapshot)
 }
 
 ///|
-impl @vfs.Flushable for IndexedDbFs with flush(self) {
+pub impl @vfs.Flushable for IndexedDbFs with fn flush(self) {
   self.flush()
 }
 
 ///|
-impl @vfs.Flushable for IndexedDbFs with sync(self) {
+pub impl @vfs.Flushable for IndexedDbFs with fn sync(self) {
   self.sync()
 }
 
 ///|
-impl @vfs.Flushable for IndexedDbFs with dirty(self) {
+pub impl @vfs.Flushable for IndexedDbFs with fn dirty(self) {
   self.dirty()
 }

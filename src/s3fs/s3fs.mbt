@@ -16,7 +16,7 @@ pub fn S3Fs::new(client : @s3client.S3Client, prefix? : String = "") -> S3Fs {
 fn S3Fs::to_key(self : S3Fs, path : String) -> String {
   let normalized = @path.normalize(path)
   // Strip leading "/"
-  let relative = if normalized == "/" { "" } else { normalized[1:].to_string() }
+  let relative = if normalized == "/" { "" } else { normalized[1:].to_owned() }
   self.prefix + relative
 }
 
@@ -28,7 +28,7 @@ fn S3Fs::to_dir_key(self : S3Fs, path : String) -> String {
     // Root maps to prefix itself (or empty)
     self.prefix
   } else {
-    self.prefix + normalized[1:].to_string() + "/"
+    self.prefix + normalized[1:].to_owned() + "/"
   }
 }
 
@@ -40,8 +40,8 @@ fn split_path(path : String) -> Array[String] {
     return []
   }
   // Strip leading /
-  let s = normalized[1:].to_string()
-  s.split("/").map(fn(sv) { sv.to_string() }).collect()
+  let s = normalized[1:].to_owned()
+  s.split("/").map(fn(sv) { sv.to_owned() }).collect()
 }
 
 // --- FileSystem trait ---
@@ -156,7 +156,7 @@ pub async fn S3Fs::readdir(
     e => raise @vfs.vfs_error(e.to_string())
   }
   let result : Array[String] = []
-  let seen : Map[String, Bool] = {}
+  let seen : Map[String, Bool] = Map([])
   let prefix_len = dir_key.length()
   for obj in objects {
     let key = obj.key
@@ -164,10 +164,10 @@ pub async fn S3Fs::readdir(
       continue
     }
     // Get the part after the dir prefix
-    let relative = key[prefix_len:].to_string()
+    let relative = key[prefix_len:].to_owned()
     // Extract only the immediate child (first component)
     let child = match relative.find("/") {
-      Some(idx) => relative[:idx].to_string()
+      Some(idx) => relative[:idx].to_owned()
       None => relative
     }
     if child != "" && !seen.contains(child) {
@@ -221,11 +221,11 @@ pub async fn S3Fs::export_snapshot(self : S3Fs) -> @vfs.Snapshot {
     if key.length() <= prefix_len {
       continue
     }
-    let relative = key[prefix_len:].to_string()
+    let relative = key[prefix_len:].to_owned()
     // Directory markers end with /
     if relative.length() > 0 && relative[relative.length() - 1] == '/' {
       // Convert to VFS path: strip trailing /, add leading /
-      let dir_path = "/" + relative[:relative.length() - 1].to_string()
+      let dir_path = "/" + relative[:relative.length() - 1].to_owned()
       dirs.push(dir_path)
     } else {
       // File: download the content
@@ -271,56 +271,56 @@ pub async fn S3Fs::replace_snapshot(
 // --- Trait implementations ---
 
 ///|
-impl @vfs.FileSystem for S3Fs with mkdir_p(self, path) {
+pub impl @vfs.FileSystem for S3Fs with fn mkdir_p(self, path) {
   self.mkdir_p(path)
 }
 
 ///|
-impl @vfs.FileSystem for S3Fs with write_file(self, path, content) {
+pub impl @vfs.FileSystem for S3Fs with fn write_file(self, path, content) {
   self.write_file(path, content)
 }
 
 ///|
-impl @vfs.FileSystem for S3Fs with write_string(self, path, content) {
+pub impl @vfs.FileSystem for S3Fs with fn write_string(self, path, content) {
   self.write_string(path, content)
 }
 
 ///|
-impl @vfs.FileSystem for S3Fs with remove_file(self, path) {
+pub impl @vfs.FileSystem for S3Fs with fn remove_file(self, path) {
   self.remove_file(path)
 }
 
 ///|
-impl @vfs.FileSystem for S3Fs with remove_dir(self, path) {
+pub impl @vfs.FileSystem for S3Fs with fn remove_dir(self, path) {
   self.remove_dir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for S3Fs with read_file(self, path) {
+pub impl @vfs.ReadableFileSystem for S3Fs with fn read_file(self, path) {
   self.read_file(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for S3Fs with readdir(self, path) {
+pub impl @vfs.ReadableFileSystem for S3Fs with fn readdir(self, path) {
   self.readdir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for S3Fs with is_dir(self, path) {
+pub impl @vfs.ReadableFileSystem for S3Fs with fn is_dir(self, path) {
   self.is_dir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for S3Fs with is_file(self, path) {
+pub impl @vfs.ReadableFileSystem for S3Fs with fn is_file(self, path) {
   self.is_file(path)
 }
 
 ///|
-impl @vfs.Snapshottable for S3Fs with export_snapshot(self) {
+pub impl @vfs.Snapshottable for S3Fs with fn export_snapshot(self) {
   self.export_snapshot()
 }
 
 ///|
-impl @vfs.Snapshottable for S3Fs with replace_snapshot(self, snapshot) {
+pub impl @vfs.Snapshottable for S3Fs with fn replace_snapshot(self, snapshot) {
   self.replace_snapshot(snapshot)
 }

@@ -6,6 +6,7 @@ pub fn create_memory_fs() -> @memory.MemoryFs {
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn mkdir_p(
   fs : @memory.MemoryFs,
   path : String,
@@ -14,6 +15,7 @@ pub async fn mkdir_p(
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn write_file(
   fs : @memory.MemoryFs,
   path : String,
@@ -23,6 +25,7 @@ pub async fn write_file(
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn write_string(
   fs : @memory.MemoryFs,
   path : String,
@@ -32,6 +35,7 @@ pub async fn write_string(
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn remove_file(
   fs : @memory.MemoryFs,
   path : String,
@@ -40,6 +44,7 @@ pub async fn remove_file(
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn remove_dir(
   fs : @memory.MemoryFs,
   path : String,
@@ -48,6 +53,7 @@ pub async fn remove_dir(
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn read_file(
   fs : @memory.MemoryFs,
   path : String,
@@ -56,6 +62,7 @@ pub async fn read_file(
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn read_string(
   fs : @memory.MemoryFs,
   path : String,
@@ -64,6 +71,7 @@ pub async fn read_string(
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn readdir(
   fs : @memory.MemoryFs,
   path : String,
@@ -87,6 +95,7 @@ pub fn export_snapshot(fs : @memory.MemoryFs) -> @vfs.Snapshot {
 }
 
 ///|
+#warnings("-unused_async")
 pub async fn replace_snapshot(
   fs : @memory.MemoryFs,
   snapshot : @vfs.Snapshot,

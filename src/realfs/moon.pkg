@@ -1,7 +1,7 @@
 import {
-  "mizchi/vfs" @vfs,
-  "mizchi/vfs/src/path" @path,
-  "moonbitlang/async/fs" @fs,
+  "mizchi/vfs",
+  "mizchi/vfs/src/path",
+  "moonbitlang/async/fs",
 }
 
 import {
@@ -9,5 +9,6 @@ import {
 } for "test"
 
 options(
+  supported_targets: "native",
   targets: { "realfs.mbt": [ "native" ], "realfs_test.mbt": [ "native" ] },
 )
