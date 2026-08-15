@@ -27,8 +27,8 @@ pub async fn RealFs::mkdir_p(
   path : String,
 ) -> Unit raise @vfs.VfsError {
   let resolved = self.resolve(path)
-  let exists = try? @fs.exists(resolved)
-  if exists is Ok(true) {
+  let exists = @fs.exists(resolved) catch { _ => false }
+  if exists {
     return
   }
   @fs.mkdir(resolved, permission=0o755, recursive=true) catch {
@@ -48,7 +48,12 @@ pub async fn RealFs::write_file(
   self.mkdir_p(parent_vfs) catch {
     e => raise e
   }
-  @fs.write_file(resolved, content, create=0o644) catch {
+  @fs.write_file(
+    resolved,
+    content,
+    create_mode=CreateOrTruncate,
+    permission=0o644,
+  ) catch {
     e => raise @vfs.vfs_error("write_file failed: \{e}")
   }
 }
@@ -64,7 +69,12 @@ pub async fn RealFs::write_string(
   self.mkdir_p(parent_vfs) catch {
     e => raise e
   }
-  @fs.write_file(resolved, content, create=0o644) catch {
+  @fs.write_file(
+    resolved,
+    content,
+    create_mode=CreateOrTruncate,
+    permission=0o644,
+  ) catch {
     e => raise @vfs.vfs_error("write_string failed: \{e}")
   }
 }
@@ -116,25 +126,19 @@ pub async fn RealFs::readdir(
 ///|
 pub async fn RealFs::is_dir(self : RealFs, path : String) -> Bool {
   let resolved = self.resolve(path)
-  let exists = try? @fs.exists(resolved)
-  guard exists is Ok(true) else { return false }
-  let k = try? @fs.kind(resolved)
-  match k {
-    Ok(Directory) => true
-    _ => false
-  }
+  let exists = @fs.exists(resolved) catch { _ => false }
+  guard exists else { return false }
+  let k = @fs.kind(resolved) catch { _ => return false }
+  k is Directory
 }
 
 ///|
 pub async fn RealFs::is_file(self : RealFs, path : String) -> Bool {
   let resolved = self.resolve(path)
-  let exists = try? @fs.exists(resolved)
-  guard exists is Ok(true) else { return false }
-  let k = try? @fs.kind(resolved)
-  match k {
-    Ok(Regular) => true
-    _ => false
-  }
+  let exists = @fs.exists(resolved) catch { _ => false }
+  guard exists else { return false }
+  let k = @fs.kind(resolved) catch { _ => return false }
+  k is Regular
 }
 
 ///|
@@ -206,7 +210,12 @@ pub async fn RealFs::replace_snapshot(
   // Recreate files
   for file in snapshot.files {
     let resolved = self.resolve(file.path)
-    @fs.write_file(resolved, file.data, create=0o644) catch {
+    @fs.write_file(
+      resolved,
+      file.data,
+      create_mode=CreateOrTruncate,
+      permission=0o644,
+    ) catch {
       e => raise @vfs.vfs_error("replace_snapshot write failed: \{e}")
     }
   }
@@ -215,56 +224,56 @@ pub async fn RealFs::replace_snapshot(
 // --- Trait implementations ---
 
 ///|
-impl @vfs.FileSystem for RealFs with mkdir_p(self, path) {
+pub impl @vfs.FileSystem for RealFs with fn mkdir_p(self, path) {
   self.mkdir_p(path)
 }
 
 ///|
-impl @vfs.FileSystem for RealFs with write_file(self, path, content) {
+pub impl @vfs.FileSystem for RealFs with fn write_file(self, path, content) {
   self.write_file(path, content)
 }
 
 ///|
-impl @vfs.FileSystem for RealFs with write_string(self, path, content) {
+pub impl @vfs.FileSystem for RealFs with fn write_string(self, path, content) {
   self.write_string(path, content)
 }
 
 ///|
-impl @vfs.FileSystem for RealFs with remove_file(self, path) {
+pub impl @vfs.FileSystem for RealFs with fn remove_file(self, path) {
   self.remove_file(path)
 }
 
 ///|
-impl @vfs.FileSystem for RealFs with remove_dir(self, path) {
+pub impl @vfs.FileSystem for RealFs with fn remove_dir(self, path) {
   self.remove_dir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for RealFs with read_file(self, path) {
+pub impl @vfs.ReadableFileSystem for RealFs with fn read_file(self, path) {
   self.read_file(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for RealFs with readdir(self, path) {
+pub impl @vfs.ReadableFileSystem for RealFs with fn readdir(self, path) {
   self.readdir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for RealFs with is_dir(self, path) {
+pub impl @vfs.ReadableFileSystem for RealFs with fn is_dir(self, path) {
   self.is_dir(path)
 }
 
 ///|
-impl @vfs.ReadableFileSystem for RealFs with is_file(self, path) {
+pub impl @vfs.ReadableFileSystem for RealFs with fn is_file(self, path) {
   self.is_file(path)
 }
 
 ///|
-impl @vfs.Snapshottable for RealFs with export_snapshot(self) {
+pub impl @vfs.Snapshottable for RealFs with fn export_snapshot(self) {
   self.export_snapshot()
 }
 
 ///|
-impl @vfs.Snapshottable for RealFs with replace_snapshot(self, snapshot) {
+pub impl @vfs.Snapshottable for RealFs with fn replace_snapshot(self, snapshot) {
   self.replace_snapshot(snapshot)
 }

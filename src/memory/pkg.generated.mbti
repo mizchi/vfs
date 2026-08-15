@@ -27,8 +27,9 @@ pub fn MemoryFs::replace_snapshot(Self, @vfs.Snapshot) -> Unit raise @vfs.VfsErr
 pub fn MemoryFs::reset(Self) -> Unit
 pub fn MemoryFs::write_file(Self, String, Bytes) -> Unit raise @vfs.VfsError
 pub fn MemoryFs::write_string(Self, String, String) -> Unit raise @vfs.VfsError
+pub impl @vfs.FileSystem for MemoryFs
+pub impl @vfs.ReadableFileSystem for MemoryFs
 
 // Type aliases
 
 // Traits
-

@@ -10,8 +10,3 @@ extern "js" fn js_string_to_utf8(s : String) -> Bytes =
 /// Decode UTF-8 Bytes to String using cached TextDecoder.
 extern "js" fn js_utf8_to_string(b : Bytes) -> String =
   #| (b) => (globalThis.__vfsDecoder ??= new TextDecoder()).decode(b instanceof Uint8Array ? b : new Uint8Array(b))
-
-///|
-/// Fast Uint8Array clone via slice() — avoids MoonBit Bytes copy overhead.
-extern "js" fn js_clone_bytes(b : Bytes) -> Bytes =
-  #| (b) => (b instanceof Uint8Array ? b.slice() : new Uint8Array(b))

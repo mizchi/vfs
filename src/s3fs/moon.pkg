@@ -1,16 +1,12 @@
 import {
-  "mizchi/vfs" @vfs,
-  "mizchi/vfs/src/path" @path,
+  "mizchi/vfs",
+  "mizchi/vfs/src/path",
   "mizchi/s3",
   "mizchi/s3/src/client" @s3client,
-  "moonbitlang/async",
-  "moonbitlang/core/encoding/utf8" @utf8,
+  "moonbitlang/core/encoding/utf8",
 }
 
-import {
-  "moonbitlang/async",
-} for "test"
-
 options(
-  targets: { "s3fs.mbt": [ "js", "native" ] },
+  supported_targets: "js",
+  targets: { "s3fs.mbt": [ "js" ] },
 )
